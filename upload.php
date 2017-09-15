@@ -9,7 +9,7 @@ if(count($_FILES) > 0){
 	if (!file_exists($uploaddir)) {
 	    mkdir($uploaddir, 0777, true);
 	}
-	$uploadfile = $uploaddir .DIRECTORY_SEPARATOR. $_FILES['iosdebug']['name'];
+	$uploadfile = $uploaddir .DIRECTORY_SEPARATOR. time();
 
 	if (move_uploaded_file($_FILES['iosdebug']['tmp_name'], $uploadfile)) {
 		$arr = array();
