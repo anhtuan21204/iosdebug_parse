@@ -3,6 +3,7 @@
 	const CARD_KEY = '52CARD';
 	const GIFT_KEY = '51GIFT';
 	const ENTER_KEY = '3ENTER';
+	const SIGNOFF = '77CASHIER OFF';
 	const TIME_LENGTH = 19;
 	const READER_DEVICE_LENGTH = 17;
 	const COMMAND_READ_LENGTH = 35;
