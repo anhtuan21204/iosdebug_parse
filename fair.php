@@ -13,7 +13,9 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="./js/dropzone.js"></script>
-
+	<style type="text/css">
+		.page-break{page-break-before: always;}
+	</style>
 </head>
 <body>
 <?php 
@@ -25,7 +27,7 @@
 <div class="container">
 	<div class="row"> 
 		<div class="col-xs-12">
-			<form action="<?= $_SERVER['REQUEST_URI'] ?>/upload.php" class="dropzone" id="my-awesome-dropzone"></form>
+			<form action="./fair_upload.php" class="dropzone" id="my-awesome-dropzone"></form>
 		</div>
 	</div>
 </div>
@@ -33,17 +35,14 @@
 <div class="container">
 	<div class="row"> 
 		<div class="col-xs-12">
-			<table class="table table-responsive table-striped" id="iosdebug-table">
+			<table class="table table-responsive table-striped" id="iosdebug-table" style="width:100%; max-width:100%">
 			<thead>
-			<tr>
-				<th>Time</th>
-				<th>Input device</th>
+			<tr style="width:100%; max-width:100%">
 				<th>Command</th>
-				<th>Input Content</th>
 				<th>Barcode</th>
 			</tr>
 			</thead>
-			<tbody>
+			<tbody style="width:100%; max-width:100%">
 			
 			</tbody>
 		</table>

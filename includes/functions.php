@@ -40,83 +40,79 @@ function splitDataToBill($arr){
 			$temp++;
 		}
 		return $bills;
-	}
+}
 
-	function removeExtraSpace($str) {
-		return ltrim(rtrim(preg_replace('/\s+/', ' ', $str)));
-	}
+function removeExtraSpace($str) {
+	return ltrim(rtrim(preg_replace('/\s+/', ' ', $str)));
+}
 
-	function removeLineBreak($str) {
-		return preg_replace( "/\r|\n/", "", $str );
+function removeLineBreak($str) {
+	return preg_replace( "/\r|\n/", "", $str );
+}
+
+function isCashierLogined($commands) {
+	$last = count($commands) - 1;
+	if($last >= 1){
+		if($commands[$last-1]['command'] == ENTER_KEY && strlen($commands[$last-1]['content']) == 9 && $commands[$last]['command'] == ENTER_KEY && strlen($commands[$last]['content']) == 4){ // thu ngan dang nhap
+			return true;
+		}
+	}elseif($last == 0){
+		if($commands[$last]['command'] == ENTER_KEY && strlen($commands[$last]['content']) == 4){ // thu ngan dang nhap
+			return true;
+		}
 	}
 	
-	function isCashierLogined($commands) {
-		$last = count($commands) - 1;
-		if($last >= 1){
-			if($commands[$last-1]['command'] == ENTER_KEY && strlen($commands[$last-1]['content']) == 9 && $commands[$last]['command'] == ENTER_KEY && strlen($commands[$last]['content']) == 4){ // thu ngan dang nhap
-				return true;
-			}
-		}elseif($last == 0){
-			if($commands[$last]['command'] == ENTER_KEY && strlen($commands[$last]['content']) == 4){ // thu ngan dang nhap
-				return true;
-			}
-		}
-		
-		return false;
+	return false;
+}
+
+
+function isCashierLogOff($commands) {
+	$last = count($commands) - 1;
+	if($commands[$last]['command'] == SIGNOFF && strlen($commands[$last]['content']) == 0){ // thu ngan sign off
+		return true;
 	}
+	return false;
+}
 
+function isCashKeyPressed($command) {
+	if($command == CASH_KEY || $command == CARD_KEY || $command == GIFT_KEY) {
+		return true;
+	}
+	return false;
+}
 
-	function isCashierLogOff($commands) {
-		$last = count($commands) - 1;
-		if($commands[$last]['command'] == SIGNOFF && strlen($commands[$last]['content']) == 0){ // thu ngan sign off
+function checkEndBillCash($commands=array()){
+	if(count($commands) == 3){
+		if($commands[0] == CASH_KEY && $commands[1] == ENTER_KEY && $commands[2] == ENTER_KEY){
 			return true;
 		}
-		return false;
 	}
+	return false;
+}
 
-	function isCashKeyPressed($command) {
-		if($command == CASH_KEY || $command == CARD_KEY || $command == GIFT_KEY) {
+function checkEndBillCard($commands=array()){
+	if(count($commands) == 4){
+		if($commands[0] == CARD_KEY && $commands[1] == ENTER_KEY && $commands[2] == ENTER_KEY && $commands[3] == ENTER_KEY){
 			return true;
 		}
-		return false;
 	}
-
-	function checkEndBillCash($commands=array()){
-		if(count($commands) == 3){
-			if($commands[0] == CASH_KEY && $commands[1] == ENTER_KEY && $commands[2] == ENTER_KEY){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	function checkEndBillCard($commands=array()){
-		if(count($commands) == 4){
-			if($commands[0] == CARD_KEY && $commands[1] == ENTER_KEY && $commands[2] == ENTER_KEY && $commands[3] == ENTER_KEY){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	function createHTMLForReview($bills, $generatorPNG) {
+	return false;
+}
+function createHTMLForReview($bills, $generatorPNG) {
 		foreach ($bills as $key => $bill) :			
 			
 			foreach ($bill as $k => $value) :	
 				if($k == 0){
 					echo '<tr><td colspan="5">Bill no: '.$key.'</td></tr>';
 				}
-
 				if( isset($value['signin']) ){
 					echo '<tr><td colspan="5" style="text-align:center;font-size:20px"> --- '.$value['signin'].' --- </td></tr>';
 					continue;
 				}
-
 				if( isset($value['signoff']) ){
 					echo '<tr><td colspan="5" style="text-align:center;font-size:20px"> --- '.$value['signoff'].' --- </td></tr>';
 					continue;
 				}
-
 				$barcode = '';
 				if( strpos($value['content'], '=>') > 0 ){
 					$barcode = substr($value['content'], -( strlen($value['content']) - strpos($value['content'], '>') - 1 ));
@@ -143,5 +139,24 @@ function splitDataToBill($arr){
 			<?php
 			endforeach;
 		endforeach;
+}
+
+function checkPaymentMethod($payment_constants, $line)
+{
+	foreach ($payment_constants as $c) {
+		$pos = strpos($line, $c);
+		if($pos !== false){
+			return $c;
+		}
 	}
-?>
+	return false;
+}
+function getPayment($line, $c){
+	$method = substr($line, 5, strpos($line, ' '));
+	return [$c, getAmount($line)];
+}
+function getAmount($line)
+{
+	$pos = strrpos($line, ' ');
+	return substr($line, $pos);
+}
