@@ -90,6 +90,21 @@
 			<tr>
 				<td style="font-size: 20px;"><strong><?= $bill['pos_number'] ?></strong></td>
 			</tr>
+
+			<tr>
+				<td><strong>Tổng Bill: <?= number_format($bill['sum']) ?></strong></td>
+			</tr>	
+			<?php if(isset($bill['discount'])):?>
+			<tr>
+				<td><strong>Giảm Giá: <?= number_format($bill['discount']) ?></strong></td>
+			</tr>	
+			<?php endif;?>
+			<?php foreach ($bill['payments'] as $p=>$payment): ?>
+			<tr>
+				<td><?= $p ?>:<?= number_format($payment) ?></td>
+			</tr>	
+			<?php endforeach; ?>	
+			
 			<?php foreach ($bill['product'] as $product): ?>
 				<tr>
 				<td><?= $product['name'] ?></td>
@@ -101,6 +116,17 @@
 				<td><img src="data:image/png;base64, <?= base64_encode($product['barcode_image']) ?>"></td>
 			</tr>	
 			<?php endforeach; ?>	
+			
+			<?php
+				if(isset($bill['cus'])):
+			?>
+			<tr>
+				<td>Mã KH: <?= $bill['cus'] ?></td>
+			</tr>
+			<tr>
+				<td><img src="data:image/png;base64, <?= base64_encode($bill['cus_img']) ?>"></td>
+			</tr>
+			<?php endif; ?>
 			<tr class="page-break">
 				<td style="font-size: 10px;">
 					<div class="page-break">...</div>
