@@ -1,2 +1,3 @@
 upload/*
 includes/private_constant.php
+preg_match.php
