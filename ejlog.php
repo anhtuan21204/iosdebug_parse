@@ -79,22 +79,28 @@
 		<table class="table table-responsive table-striped" id="iosdebug-table">
 		<tbody>	
 			<tr>
-				<td style="font-size: 20px;"><strong> Tong cong co <?= count($bills); ?> bill voi $<?= number_format($sum); ?> </strong></td>
+				<td style="font-size: 20px;"><strong> DA TIM THAY <?= count($bills); ?> BILL VOI TONG SO TIEN $<?= number_format($sum); ?> </strong></td>
 			</tr>
 		<?php foreach ($payments as $k=>$p): ?>
+			<?php if($p == 0) continue; ?>
 			<tr>
 				<td style="font-size: 20px;"><strong> <?= $k; ?>: <?= number_format($p); ?> </strong></td>
 			</tr>
 		<?php endforeach;?>
-		<?php foreach ($bills as $bill): ?>
+
 			<tr>
+				<td style="font-size: 20px;"><strong> GIAM GIA: <?= number_format($discount); ?> </strong></td>
+			</tr>
+
+		<?php foreach ($bills as $bill): ?>
+			<tr <?php if(array_sum($bill['payments']) - ($bill['sum']-$bill['discount']) != 0): ?>style="background: #333<?php endif; ?>">
 				<td style="font-size: 20px;"><strong><?= $bill['pos_number'] ?></strong></td>
 			</tr>
 
 			<tr>
 				<td><strong>Tổng Bill: <?= number_format($bill['sum']) ?></strong></td>
 			</tr>	
-			<?php if(isset($bill['discount'])):?>
+			<?php if($bill['discount']):?>
 			<tr>
 				<td><strong>Giảm Giá: <?= number_format($bill['discount']) ?></strong></td>
 			</tr>	
@@ -121,7 +127,7 @@
 				if(isset($bill['cus'])):
 			?>
 			<tr>
-				<td>Mã KH: <?= $bill['cus'] ?></td>
+				<td>MA KH: <?= $bill['cus'] ?></td>
 			</tr>
 			<tr>
 				<td><img src="data:image/png;base64, <?= base64_encode($bill['cus_img']) ?>"></td>

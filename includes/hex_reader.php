@@ -1,8 +1,10 @@
 <?php
 $filename = "./upload/EJLOG_20190322.DAT";
 $bills = [];
-$sum =0;
-$payments = [];
+$sum = 0;
+$discount = 0;
+$payments = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0];
+$payment_methods = ['card', 'cash', 'point', 'momo', 'gotit'];
 try {
 	if ( !file_exists($filename) ) {
     throw new Exception('File not found.');
@@ -18,10 +20,11 @@ try {
 		if(count($bill) == 0){
 			continue;
 		}
-		if(isset($bill['discount'])){
-			$sum += $bill['sum'] - $bill['discount'];
-		}else{
-			$sum += $bill['sum'];
+		$sum = $sum + ($bill['sum'] - $bill['discount']);
+		$discount += $bill['discount'];
+
+		foreach ($bill['payments'] as $p=>$payment) {
+			$payments[$p] += $payment;
 		}
 		
 		$bills[] = $bill;
@@ -70,7 +73,16 @@ function parseSingleBill($bill){
 	foreach ($lines as $line) {
 		//get pos no
 		if(preg_match('/POS:[0-9]{4}-[0-9]{4}/', $line)){
-			$b['pos_number'] = substr($line, -9);
+			$date = substr($line, strpos($line, '20'), 16);
+			$date = new DateTime($date);
+			$datetime2 = new DateTime('2019-03-22 17:10');
+
+			if($date < $datetime2){
+				return [];
+			}
+
+			// $b['pos_number'] = $line;
+			$b['pos_number'] = substr($line, -9).' - '.$date->format('H:i');
 		}
 
 		$l = count($b['product']);
@@ -128,10 +140,13 @@ function parseSingleBill($bill){
 			$tmp = substr(strrchr($line, ' '), 1);
 			$tmp = str_replace(',', '', $tmp);
 			$tmp = floatval($tmp);
-			$b['discount'] = $tmp;
+			$b['discount'] = abs($tmp);
 		}
 
 		$prev = $line;
+	}
+	if(!isset($b['discount'])){
+		$b['discount'] = 0;
 	}
 	return $b;
 	
