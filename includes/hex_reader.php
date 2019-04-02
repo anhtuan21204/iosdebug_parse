@@ -129,6 +129,22 @@ function parseSingleBill($bill){
 			$b['pay'] += $tmp;
 		}
 
+		if(strpos($line, 'MOMO ') !== false){
+			$tmp = substr(strrchr($line, ' '), 1);
+			$tmp = str_replace(',', '', $tmp);
+			$tmp = floatval($tmp);
+			$b['payments']['momo'] = $tmp;
+			$b['pay'] += $tmp;
+		}
+
+		if(strpos($line, 'Got It ') !== false){
+			$tmp = substr(strrchr($line, ' '), 1);
+			$tmp = str_replace(',', '', $tmp);
+			$tmp = floatval($tmp);
+			$b['payments']['gotit'] = $tmp;
+			$b['pay'] += $tmp;
+		}
+
 		if(strpos($line, 'Tong cong') !== false){
 			$tmp = substr(strrchr($line, ' '), 1);
 			$tmp = str_replace(',', '', $tmp);
