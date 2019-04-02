@@ -75,7 +75,7 @@ function parseSingleBill($bill){
 		if(preg_match('/POS:[0-9]{4}-[0-9]{4}/', $line)){
 			$date = substr($line, strpos($line, '20'), 16);
 			$date = new DateTime($date);
-			$datetime2 = new DateTime('2019-03-22 17:10');
+			$datetime2 = new DateTime('2019-03-22 17:11');
 
 			if($date < $datetime2){
 				return [];
