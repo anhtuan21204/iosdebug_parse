@@ -1,5 +1,5 @@
 <?php
-$filename = "./upload/EJLOG_20190322.DAT";
+$filename = "./upload/ejlog.DAT";
 $bills = [];
 $sum = 0;
 $discount = 0;
@@ -54,7 +54,7 @@ function parseSingleBill($bill){
 	if(strpos($bill, 'CASHIER') === false){
 		return [];
 	}
-	if(strpos($bill, '[ket thuc cashier]') !== false){
+	if(strpos($bill, '[ket thuc cashier]') !== false || strpos($bill, '[Tienchuanbi]') !== false){
 		return [];
 	}	
 	if(strpos($bill, '[ CLOSE     ]') !== false){
