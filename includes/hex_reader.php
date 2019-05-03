@@ -20,6 +20,9 @@ try {
 		if(count($bill) == 0){
 			continue;
 		}
+		if(!isset($bill['sum'])){
+			var_dump($bill['pos_number']);
+		}
 		$sum = $sum + ($bill['sum'] - $bill['discount']);
 		$discount += $bill['discount'];
 
@@ -150,6 +153,8 @@ function parseSingleBill($bill){
 			$tmp = str_replace(',', '', $tmp);
 			$tmp = floatval($tmp);
 			$b['sum'] = $tmp;
+		}else{
+			return [];
 		}
 
 		if(strpos($line, 'Giam gia     ') !== false){
