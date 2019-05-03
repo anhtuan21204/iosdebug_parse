@@ -153,8 +153,6 @@ function parseSingleBill($bill){
 			$tmp = str_replace(',', '', $tmp);
 			$tmp = floatval($tmp);
 			$b['sum'] = $tmp;
-		}else{
-			return [];
 		}
 
 		if(strpos($line, 'Giam gia     ') !== false){
@@ -168,6 +166,9 @@ function parseSingleBill($bill){
 	}
 	if(!isset($b['discount'])){
 		$b['discount'] = 0;
+	}
+	if(!isset$b['sum']){
+		return [];
 	}
 	return $b;
 	
