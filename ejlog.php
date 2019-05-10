@@ -98,6 +98,9 @@
 			</tr>
 
 			<tr>
+				<td><strong>Cashier <?= $bill['cashier'] ?></strong></td>
+			</tr>	
+			<tr>
 				<td><strong>Tổng Bill: <?= number_format($bill['sum']) ?></strong></td>
 			</tr>	
 			<?php if($bill['discount']):?>

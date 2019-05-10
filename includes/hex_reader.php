@@ -1,5 +1,6 @@
 <?php
-$filename = "./upload/ejlog.DAT";
+// $filename = "./upload/ejlog.DAT";
+$filename = "./upload/EJLOG_20190504.DAT";
 $bills = [];
 $sum = 0;
 $discount = 0;
@@ -89,7 +90,7 @@ function parseSingleBill($bill){
 		}
 
 		$l = count($b['product']);
-		if(preg_match('/^[ 0-9]{14}/', $line)){
+		if(preg_match('/^[ 0-9]{14}/', $line) || preg_match('/^L[ 0-9]{14}/', $line)){
 			$code = substr($line, 1, 13);
 			if(is_numeric($code)){
 				$b['product'][$l]['name'] = $prev;
@@ -162,12 +163,17 @@ function parseSingleBill($bill){
 			$b['discount'] = abs($tmp);
 		}
 
+		if(strpos($line, ' CASHIER ') !== false){
+			$tmp = substr($line, 15);
+			$b['cashier'] = $tmp;
+		}
+
 		$prev = $line;
 	}
 	if(!isset($b['discount'])){
 		$b['discount'] = 0;
 	}
-	if(!isset$b['sum']){
+	if(!isset($b['sum'])){
 		return [];
 	}
 	return $b;
