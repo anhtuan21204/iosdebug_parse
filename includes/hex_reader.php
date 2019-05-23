@@ -1,6 +1,6 @@
 <?php
 // $filename = "./upload/ejlog.DAT";
-$filename = "./upload/hiep/cgy-1052/EJLOG_20190504.DAT";
+$filename = "./upload/hiep/5/EJLOG_20190504.DAT";
 $bills = [];
 $sum = 0;
 $discount = 0;
@@ -79,7 +79,9 @@ function parseSingleBill($bill){
 	if(strpos($bill, 'dthu gd noi bo ') !== false){
 		return [];
 	}
-	
+	if(strpos($bill, '***Hoa don bao luu giao dich***') !== false){
+		return [];
+	}
 
 	$card = 0;
 	if(strpos($bill, 'Cong ty minhTra gop') !== false){
