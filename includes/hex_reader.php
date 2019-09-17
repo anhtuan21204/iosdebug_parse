@@ -1,11 +1,14 @@
 <?php
 // $filename = "./upload/ejlog.DAT";
-$filename = "./upload/EJLOG_20190530.DAT";
+$filename = "./upload/hiep/5/EJLOG_20190504.DAT";
 $bills = [];
 $sum = 0;
 $discount = 0;
 $payments = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0];
 $payment_methods = ['card', 'cash', 'point', 'momo', 'gotit'];
+$cashiers = [];
+$c_payments;
+
 try {
 	if ( !file_exists($filename) ) {
     throw new Exception('File not found.');
@@ -27,9 +30,18 @@ try {
 		$sum = $sum + ($bill['sum'] - $bill['discount']);
 		$discount += $bill['discount'];
 
+		if(in_array($bill['cashier'], $cashiers)){
+
+		}else{
+			$cashiers[] = $bill['cashier'];
+			$c_payments[$bill['cashier']] = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0];
+		}
+
 		foreach ($bill['payments'] as $p=>$payment) {
 			$payments[$p] += $payment;
+			$c_payments[$bill['cashier']][$p] += $payment;
 		}
+
 		
 		$bills[] = $bill;
 	}	 
@@ -62,6 +74,12 @@ function parseSingleBill($bill){
 		return [];
 	}	
 	if(strpos($bill, '[ CLOSE     ]') !== false){
+		return [];
+	}
+	if(strpos($bill, 'dthu gd noi bo ') !== false){
+		return [];
+	}
+	if(strpos($bill, '***Hoa don bao luu giao dich***') !== false){
 		return [];
 	}
 
@@ -164,8 +182,9 @@ function parseSingleBill($bill){
 		}
 
 		if(strpos($line, ' CASHIER ') !== false){
-			$tmp = substr($line, 15);
-			$b['cashier'] = $tmp;
+			$tmp = substr($line, 16);
+			$tmp = trim($tmp);
+			$b['cashier'] = str_replace(' ', '_', $tmp);
 		}
 
 		$prev = $line;
