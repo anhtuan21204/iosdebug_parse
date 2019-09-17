@@ -86,7 +86,25 @@
 				<td style="font-size: 20px;"><strong> <?= $k; ?>: <?= number_format($p); ?> </strong></td>
 			</tr>
 		<?php endforeach;?>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Tính lại từ bill sau đây:</td>
+			</tr>
 		<?php foreach ($arr_products as $products): ?>
+			<tr>
+				<td><strong>BILL no: <?= $products['pos_number'] ?> </strong></td>
+			</tr>
+		<?php if(!isset($products['cashier'])): ?>
+			<tr>
+				<td><strong>BILL BẢO LƯU</strong></td>
+			</tr>
+		<?php
+		 continue; endif; ?>
+			<tr>
+				<td><strong>CASHIER <?= $products['cashier'] ?> </strong></td>
+			</tr>
 		<?php if(isset($products['lines'])): ?>
 			<tr>
 				<td><strong> Bill name: <?= $products['file_name'] ?> </strong></td>
