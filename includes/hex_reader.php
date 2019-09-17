@@ -1,6 +1,6 @@
 <?php
 // $filename = "./upload/ejlog.DAT";
-$filename = "./upload/EJLOG_20190504.DAT";
+$filename = "./upload/EJLOG_20190530.DAT";
 $bills = [];
 $sum = 0;
 $discount = 0;
