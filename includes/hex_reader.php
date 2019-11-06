@@ -1,11 +1,11 @@
 <?php
 // $filename = "./upload/ejlog.DAT";
-$filename = "./upload/EJLOG_20190914.DAT";
+$filename = "./upload/2052_20190919.DAT";
 $bills = [];
 $sum = 0;
 $discount = 0;
-$payments = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0];
-$payment_methods = ['card', 'cash', 'point', 'momo', 'gotit'];
+$payments = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0, 'return_cash'=>0, 'return_card'=>0];
+$payment_methods = ['card', 'cash', 'point', 'momo', 'gotit', 'return_card', 'return_cash'];
 $cashiers = [];
 $c_payments;
 
@@ -34,7 +34,7 @@ try {
 
 		}else{
 			$cashiers[] = $bill['cashier'];
-			$c_payments[$bill['cashier']] = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0];
+			$c_payments[$bill['cashier']] = $payments;
 		}
 
 		foreach ($bill['payments'] as $p=>$payment) {
@@ -97,7 +97,7 @@ function parseSingleBill($bill){
 		if(preg_match('/POS:[0-9]{4}-[0-9]{4}/', $line)){
 			$date = substr($line, strpos($line, '20'), 16);
 			$date = new DateTime($date);
-			$datetime2 = new DateTime('2019-03-22 17:11');
+			$datetime2 = new DateTime('2019-09-19 13:55');
 
 			if($date < $datetime2){
 				return [];
@@ -131,7 +131,11 @@ function parseSingleBill($bill){
 			$tmp = substr(strrchr($line, ' '), 1);
 			$tmp = str_replace(',', '', $tmp);
 			$tmp = floatval($tmp);
-			$b['payments']['card'] = $tmp;
+			if($tmp < 0){
+				$b['payments']['return_card'] = $tmp;
+			}else{
+				$b['payments']['card'] = $tmp;
+			}
 			$b['pay'] += $tmp;
 		}
 
@@ -139,7 +143,14 @@ function parseSingleBill($bill){
 			$tmp = substr(strrchr($line, ' '), 1);
 			$tmp = str_replace(',', '', $tmp);
 			$tmp = floatval($tmp);
-			$b['payments']['cash'] = $tmp;
+			if($tmp < 0){
+				var_dump($b['pos_number']);
+				var_dump($tmp);
+				$b['payments']['return_cash'] = $tmp;
+			}else{
+				$b['payments']['cash'] = $tmp;
+			}
+			
 			$b['pay'] += $tmp;
 		}
 
