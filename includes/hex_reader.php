@@ -14,6 +14,12 @@ try {
     throw new Exception('File not found.');
   }	
 	$my_file = fopen($filename, "rw"); 
+
+} catch (Exception $e) {
+	echo $e->getMessage();
+	exit;
+}
+
 	while (! feof ($my_file)) 
 	{ 
 		$bill = singleBill(fgets($my_file));
@@ -48,9 +54,6 @@ try {
 	  
 	// file is closed using fclose() function 
 	fclose($my_file); 
-} catch (Exception $e) {
-	echo $e;
-}
 
 
 function singleBill($line)
