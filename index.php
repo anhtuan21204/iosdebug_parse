@@ -16,11 +16,6 @@
 
 </head>
 <body>
-<?php 
-// include_once './includes/ParseJournal.php';
-// $journal = new ParseJournal('01013', '0006', '20170919');
-// print_r($journal->getBills()) ;
-?>
 <h1 class="text-center">iOS debug parse</h1>
 <div class="container">
 	<div class="row"> 
