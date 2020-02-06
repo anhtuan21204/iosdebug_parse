@@ -21,7 +21,7 @@ if(count($_FILES) > 0){
 		$payments = ['card'=>0, 'cash'=>0, 'point'=>0, 'momo'=>0, 'gotit'=>0, 'return_cash'=>0, 'return_card'=>0];
 		$payment_methods = ['card', 'cash', 'point', 'momo', 'gotit', 'return_card', 'return_cash'];
 		$cashiers = [];
-		$c_payments;
+		$c_payments = [];
 
 		try {
 			if ( !file_exists($filename) ) {
