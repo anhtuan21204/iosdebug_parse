@@ -65,8 +65,8 @@ function parseSingleBill($bill){
 			}
 		}
 
-		if(preg_match('/^hv  :[0-9]{16}/', $line)){
-			$b['cus'] = substr($line, 5, 16);
+		if(preg_match('/^LOTTE Members Card: [0-9]{16}/', $line)){
+			$b['cus'] = substr($line, 20, 16);
 			if(is_numeric($b['cus'])){
 				$barcode = $generatorPNG->getBarcode($b['cus'], $generatorPNG::TYPE_CODE_128);	
 				$b['cus_img'] = $barcode;	
