@@ -8,7 +8,7 @@ $max_char_in_line = 46;
 $begin_product_line = '[NOR] '; // bat dau mot dong san pham
 // $begin_line = '[NOR]L'; // bill khong len, bi off
 $str_sum = ['[NOR]Tong cong', '[DHE]Tong cong'];
-$const_thanhtoan = ['[NOR]Thanh toan diem', '[NOR]Tien mat', '[NOR]CREDITCARD', '[NOR]Giam gia'];
+$const_thanhtoan = ['[NOR]Thanh toan diem', '[NOR]Tien mat', '[NOR]CREDITCARD', '[NOR]Giam gia', '[NOR]MOMO Pay'];
 $arr_products = [];
 $sum = 0; $bill_count = 0; $payments = [];
 foreach ($files as $k=>$file_name) {
@@ -21,11 +21,16 @@ foreach ($files as $k=>$file_name) {
 	$generatorPNG = new Picqer\Barcode\BarcodeGeneratorPNG();
 	$card = 0;
 	$skip_bill = 0;
+	$manager = 0;
 	while(!feof($f))
 	{
 		$line = fgets($f);
 		if($skip_bill == 1){
 			continue;
+		}
+		// Bill test printer - bo qua
+		if(strpos($line, '[NOR]MANAGER') !== false){
+			$manager = 1;
 		}
 		// Bill bao luu - bo qua
 		if(strpos($line, '[DHE]  So bao luu') !== false){
@@ -60,8 +65,9 @@ foreach ($files as $k=>$file_name) {
 			if($date < $datetime2){
 				return [];
 			}
-
-			$arr_products[$k]['pos_number'] = substr($line, -11).' - '.$date->format('H:i');
+			$pos_number = substr($line, -11).' - '.$date->format('H:i');
+			// var_dump($pos_number);
+			$arr_products[$k]['pos_number'] = $pos_number;
 		}
 
 		if(strpos($line, '[LOG]CASHIER') !== false){
