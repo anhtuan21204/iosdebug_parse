@@ -92,7 +92,10 @@
 			<tr>
 				<td>Tính lại từ bill sau đây:</td>
 			</tr>
-		<?php foreach ($arr_products as $products): ?>
+		<?php 
+			foreach ($arr_products as $products): 
+				if(!isset( $products['pos_number'])) continue;
+		?>
 			<tr>
 				<td><strong>BILL no: <?= $products['pos_number'] ?> </strong></td>
 			</tr>

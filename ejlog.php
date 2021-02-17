@@ -70,7 +70,7 @@
 <div class="container">
 	<div class="row"> 
 		<div class="col-xs-12">
-			<form action="<?= dirname($_SERVER['PHP_SELF']) ?>/ejlog_upload.php" class="dropzone" id="my-awesome-dropzone"></form>
+			<form action="<?= dirname($_SERVER['HTTP_HOST']) ?>/ejlog_upload.php" class="dropzone" id="my-awesome-dropzone"></form>
 		</div>
 	</div>
 	<div class="row"> 
